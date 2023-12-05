@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stopwatch">
+     <!-- Element za prikaz trenutnog vremena -->
+    <h1 id="displayTime">00:00:00</h1>
+      <!-- Dugmadi za upravljanje stopericom -->
+    <div class="buttons">
+     <!-- Dugme za zaustavljanje stopice, povezano sa funkcijom watchStop() -->
+        <img src="images/stop.png" onclick="watchStop()">
+
+            <!-- Dugme za pokretanje stopice, povezano sa funkcijom watchStart() -->
+       <img src="images/start.png" onclick="watchStart()">
+
+            <!-- Dugme za resetovanje stopice, povezano sa funkcijom watchReset() -->
+        <img src="images/reset.png" onclick="watchReset()">
+    </div>
+</div>
+
+
+    <!-- JavaScript kod za implementaciju stopice -->
+
+<script>
+        // Inicijalizacija varijabli za čuvanje vremena
+    let [seconds, minutes, hours] = [0,0,0];
+            // Referenca na element koji prikazuje trenutno vrijeme
+    let displayTime = document.getElementById("displayTime");
+            // Promenljiva koja čuva ID intervala za funkciju setInterval
+    let timer = null;
+
+        // Funkcija koja se poziva svake sekunde kako bi se ažuriralo vrijeme
+     function stopwatch(){
+        seconds++;
+        if(seconds == 60){
+            seconds = 0;
+            minutes++;
+            if(minutes == 60){
+                minutes = 0;
+                hours++;
+            }
+        }
+
+                    // Formatiranje vremena da bude u formatu "HH:MM:SS"
+    let h = hours < 10 ? "0" + hours : hours;
+    let m = minutes < 10 ? "0" + minutes : minutes;
+    let s = seconds < 10 ? "0" + seconds : seconds;
+
+
+            // Postavljanje formatiranog vremena u HTML element
+        displayTime.innerHTML = h +":"+ m +":"+ s;
+     }
+
+        // Funkcija za pokretanje stopice
+     function watchStart(){
+          // Provjera da li je stopica već pokrenuta
+        if(timer!= null){
+            clearInterval(timer);
+        }
+                    // Pokretanje intervala koji poziva funkciju stopwatch svake sekunde
+        timer = setInterval(stopwatch,1000); 
+     }
+        // Funkcija za zaustavljanje stopice
+     function watchStop(){
+        clearInterval(timer);
+
+     }
+        // Funkcija za resetovanje stopice
+     function watchReset(){
+                    // Zaustavljanje intervala
+        clearInterval(timer);
+                    // Resetovanje vremena na nulu
+        [seconds, minutes, hours] = [0,0,0];
+                    // Postavljanje formatiranog vremena na "00:00:00"
+        displayTime.innerHTML = "00:00:00";
+
+     }
+
+</script>
+</body>
+</html>
